@@ -1,5 +1,6 @@
 import pandas as pd ### para manejo de datos
 import sqlite3 as sql #### para bases de datos sql
+import funciones as funciones  ###archivo de funciones propias
 
 ####################################################################################################################
 ########################  1. Comprender y limpiar datos ##################################################################
@@ -77,13 +78,13 @@ df['resignationReason'] = df['resignationReason'].astype('category')
 print(df.dtypes)
 
 # Ahora se eliminaran las columnas que no aportan al analisis
-df.drop(columns=["EmployeeCount", "Over18", "StandardHours","EmployeeID"],inplace=True)
+df.drop(columns=["EmployeeCount", "Over18", "StandardHours"],inplace=True)
 
 
 ##### SQL #####
 conn = sql.connect("db_empleados")  # creacion de la base de datos
 cursor = conn.cursor() # para funcion execute
-cursor.execute("select from sqlite_master where type='table'")
+cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
 cursor.fetchall() #para ver en tabalas las bases de datos
 
 # Llevar DataFrame a la base de datos
@@ -135,5 +136,17 @@ pd.read_sql("""SELECT retirementDate AS Date,
                         GROUP BY Date
                         ORDER BY Retirements DESC""", conn)
 
-##### las variables identificadas para recategorizar son: 
-## Age, 
+#### Las variables identificadas para recategorizar son: 
+# Pendiente, Age puede ser una...
+
+###### Preprocesamientos que se realizarán con SQL:
+
+##### 1. Filtrar empleados que se retiraron en 2016 para analizar las razones detrás de su retiro.
+##### 2. Calcular nuevas variables como  la antigüedad de los empleados en la empresa, la edad de los empleados, y otras métricas como la satisfacción media a lo largo del tiempo.
+
+#Para hacer todos los preprocesamienteos se crea archivo .sql que se ejecuta con la función: ejecutar_sql del archivo funciones.py
+cur=conn.cursor()
+funciones.ejecutar_sql('preprocesamientos.sql',cur)
+
+df.info()
+df.describe(include='all')
