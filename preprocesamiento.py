@@ -136,6 +136,16 @@ pd.read_sql("""SELECT retirementDate AS Date,
                         GROUP BY Date
                         ORDER BY Retirements DESC""", conn)
 
+# Rellenar los valores NaN con "No" para la columna Attrition
+df['Attrition'].fillna('No', inplace=True)
+
+# Mapear "Yes" a 1 y "No" a 0
+attrition_mapping = {'Yes': 1, 'No': 0}
+df['Attrition'] = df['Attrition'].map(attrition_mapping)
+
+# Verificar si la conversión fue exitosa
+df['Attrition'].unique()
+
 #### Las variables identificadas para recategorizar son: 
 # Pendiente, Age puede ser una...
 
