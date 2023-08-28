@@ -35,7 +35,7 @@ print(df_general.isnull().sum())
 print(df_manager.isnull().sum())
 print(df_retirement.isnull().sum())
 
-# Unir los diferentes dataframes utilizando la columna 'EmployeeID' como clave
+##### Unir los diferentes dataframes utilizando la columna 'EmployeeID' como clave
 df = df_employee.merge(df_general, on='EmployeeID', how='inner')\
                         .merge(df_manager, on='EmployeeID', how='inner')\
                         .merge(df_retirement, on='EmployeeID', how='left')
@@ -43,6 +43,8 @@ df = df_employee.merge(df_general, on='EmployeeID', how='inner')\
 # Procedemos a revisar los valores nulos
 print(df.isnull().sum())
 df[df['TotalWorkingYears'].isnull()] 
+
+##### Aqui se solucionan los nulos de algunas columnas #####
 
 # Se cambia a cero los valores nulos de la columna 'NumCompaniesWorked' asumiendo que esta es su primera empresa y habiendo verificado que todos iniciaron siendo mayores de edad
 df['NumCompaniesWorked'] = df['NumCompaniesWorked'].fillna(0)
@@ -60,5 +62,23 @@ df['WorkLifeBalance'].value_counts()
 df['WorkLifeBalance'] = df['WorkLifeBalance'].fillna(3)
 # Remplazar los valores de los años trabajados en la empresa en la columan de años totales trabajdos para quitar los nulos
 df['TotalWorkingYears'].fillna(df['YearsAtCompany'], inplace=True)
+
+#Al volver a revisar vemos que las columnas retirementDate, retirementType, y resignationReason tienen valores nulos, lo cual es esperado dado que no todos los empleados se habrán retirado o renunciado.
+print(df.isnull().sum())
+
+#La columna retirementDate contiene fechas en formato de cadena de texto (string), que deberían convertirse a un formato de fecha.
+df['retirementDate'] = pd.to_datetime(df['retirementDate'], dayfirst=True)
+
+#Las columnas retirementType y resignationReason contienen valores categóricos en formato de cadena de texto.
+df['retirementType'] = df['retirementType'].astype('category')
+df['resignationReason'] = df['resignationReason'].astype('category')
+
+#Ahora ya tienen un formato adecuado
+print(df.dtypes)
+
+# Ahora se eliminaran las columnas que no aportan al analisis
+df.drop(columns=["EmployeeCount", "Over18", "StandardHours","EmployeeID"],inplace=True)
+
+
 
 
