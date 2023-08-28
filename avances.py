@@ -80,5 +80,60 @@ print(df.dtypes)
 df.drop(columns=["EmployeeCount", "Over18", "StandardHours","EmployeeID"],inplace=True)
 
 
+##### SQL #####
+conn = sql.connect("db_empleados")  # creacion de la base de datos
+cursor = conn.cursor() # para funcion execute
+cursor.execute("select from sqlite_master where type='table'")
+cursor.fetchall() #para ver en tabalas las bases de datos
 
+# Llevar DataFrame a la base de datos
+df.to_sql("all_employees", conn, if_exists="replace")
 
+## Hacer consultas para verificar la base de datos ##
+
+#Numero de empleados por departamento
+pd.read_sql("""SELECT Department, COUNT(*) 
+                                FROM all_employees 
+                                GROUP BY Department""", conn)
+
+#Retiros segun departamento
+pd.read_sql("""SELECT Department, COUNT(*) as Retirements 
+                                    FROM all_employees 
+                                    WHERE retirementDate IS NOT NULL 
+                                    GROUP BY Department""", conn)
+
+#Retiros según el nivel de satisfacción laboral
+pd.read_sql("""SELECT JobSatisfaction, COUNT(*) as Retirements 
+                                    FROM all_employees 
+                                    WHERE retirementDate IS NOT NULL 
+                                    GROUP BY JobSatisfaction""", conn)
+
+#Retiros según la antigüedad en la empresa
+pd.read_sql("""SELECT YearsAtCompany, COUNT(*) as Retirements 
+                                    FROM all_employees 
+                                    WHERE retirementDate IS NOT NULL 
+                                    GROUP BY YearsAtCompany
+                                    ORDER BY YearsAtCompany""", conn)
+
+#Retiros según la edad
+pd.read_sql("""SELECT Age, COUNT(*) as Retirements 
+                                    FROM all_employees 
+                                    WHERE retirementDate IS NOT NULL 
+                                    GROUP BY Age""", conn)
+
+#Razones de retiro
+pd.read_sql("""SELECT resignationReason, COUNT(*) as Count 
+                                    FROM all_employees 
+                                    WHERE retirementDate IS NOT NULL 
+                                    GROUP BY resignationReason""", conn)
+
+#Analizar los retiros por fecha exacta
+pd.read_sql("""SELECT retirementDate AS Date, 
+                        COUNT(*) AS Retirements 
+                        FROM all_employees 
+                        WHERE retirementDate IS NOT NULL 
+                        GROUP BY Date
+                        ORDER BY Retirements DESC""", conn)
+
+##### las variables identificadas para recategorizar son: 
+## Age, 
