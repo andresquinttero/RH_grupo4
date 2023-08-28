@@ -23,27 +23,42 @@ df_general.sort_values(by=['EmployeeID'],ascending=0).head(5)
 df_manager.sort_values(by=['EmployeeID'],ascending=0).head(5)
 df_retirement.sort_values(by=['EmployeeID'],ascending=0).head(5)
 
-conn = sql.connect(':memory:')
+# Obtener información sobre los DataFrames
+df_employee.info(verbose=True)
+df_general.info()
+df_manager.info()
+df_retirement.info()
 
-# Insertar DataFrames en la base de datos SQLite
-employee_survey_data.to_sql('employee_survey_data', conn, index=False)
-general_data.to_sql('general_data', conn, index=False)
-in_time.to_sql('in_time', conn, index=False)
-manager_survey_data.to_sql('manager_survey_data', conn, index=False)
-out_time.to_sql('out_time', conn, index=False)
-retirement_info.to_sql('retirement_info', conn, index=False)
+# Verificar entradas faltantes
+print(df_employee.isnull().sum())
+print(df_general.isnull().sum())
+print(df_manager.isnull().sum())
+print(df_retirement.isnull().sum())
 
-# Cerrar la conexión
-conn.close()
-########   Verificar lectura correcta de los datos
-########   Verificar Datos faltantes (eliminar variables si es necesario) (la imputación está la parte de modelado)
-########   Tipos de variables (categoricas/numéricas/fechas)
-########   Niveles en categorícas 
-########   Observaciones por categoría
-########   Datos atípicos en numéricas
+# Unir los diferentes dataframes utilizando la columna 'EmployeeID' como clave
+df = df_employee.merge(df_general, on='EmployeeID', how='inner')\
+                        .merge(df_manager, on='EmployeeID', how='inner')\
+                        .merge(df_retirement, on='EmployeeID', how='left')
+
+# Procedemos a revisar los valores nulos
+print(df.isnull().sum())
+df[df['TotalWorkingYears'].isnull()] 
+
+# Se cambia a cero los valores nulos de la columna 'NumCompaniesWorked' asumiendo que esta es su primera empresa y habiendo verificado que todos iniciaron siendo mayores de edad
+df['NumCompaniesWorked'] = df['NumCompaniesWorked'].fillna(0)
+# Para la columna 'EnvironmentSatisfaction' se observó la mediana y el promedio y se llegó a la conclusión de que 3 es el valor más adecuado para no interferir de una
+# manera significativa en el resultado y por lo tanto los valores nulos se remplazarán por 3
+df['EnvironmentSatisfaction'].value_counts()
+df['EnvironmentSatisfaction'] = df['EnvironmentSatisfaction'].fillna(3)
+# Para la columna 'JobSatisfaction' se observo el promedio y un conteo de repeticion y se llego a la conclusion de que el 4 era el valor más adecuado para no interferir de una
+# manera significativa en el resultado y por lo tanto los valores nulos se remplazaran por 4
+df['JobSatisfaction'].value_counts()
+df['JobSatisfaction'] = df['JobSatisfaction'].fillna(4)
+# Para la columna 'WorkLifeBalance' se observo el promedio y un conteo de repeticion y se llego a la conclusion de que el 3 era el valor maas adecuado para no interferir de una
+# manera significativa en el resultado y por lo tanto los valores nulos se remplazaran por 3
+df['WorkLifeBalance'].value_counts()
+df['WorkLifeBalance'] = df['WorkLifeBalance'].fillna(3)
+# Remplazar los valores de los años trabajados en la empresa en la columan de años totales trabajdos para quitar los nulos
+df['TotalWorkingYears'].fillna(df['YearsAtCompany'], inplace=True)
 
 
-### Cargar tablas de datos desde github ###
-#action=("data//tbl_Action.csv")  
-#employees=("data//tbl_Employee.csv")  
-#performance=("data//tbl_Perf.csv")   
