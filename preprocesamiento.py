@@ -149,14 +149,30 @@ df['Attrition'].unique()
 #### Las variables identificadas para recategorizar son: 
 # Pendiente, Age puede ser una...
 
+# Llamar a la función para identificar y eliminar outliers
+funciones.identify_and_remove_outliers(conn, ['MonthlyIncome', 'TrainingTimesLastYear', 'YearsAtCompany', 'TotalWorkingYears'])
+
+# Lista de columnas para cambiar el tipo de datos
+columns_to_convert = [
+    'Education', 'EnvironmentSatisfaction', 'JobInvolvement',
+    'JobSatisfaction', 'PerformanceRating', 'WorkLifeBalance', 'JobLevel'
+]
+
+# Cambiar el tipo de datos de cada columna a 'str'
+for column in columns_to_convert:
+    df[column] = df[column].astype(str)
+
 ###### Preprocesamientos que se realizarán con SQL:
 
 ##### 1. Filtrar empleados que se retiraron en 2016 para analizar las razones detrás de su retiro.
 ##### 2. Calcular nuevas variables como  la antigüedad de los empleados en la empresa, la edad de los empleados, y otras métricas como la satisfacción media a lo largo del tiempo.
 
 #Para hacer todos los preprocesamienteos se crea archivo .sql que se ejecuta con la función: ejecutar_sql del archivo funciones.py
-cur=conn.cursor()
-funciones.ejecutar_sql('preprocesamientos.sql',cur)
-
 df.info()
 df.describe(include='all')
+
+df.to_sql("all_employees", conn, if_exists="replace")
+
+df = pd.read_sql("SELECT * FROM all_employees", conn)
+cur=conn.cursor()
+funciones.ejecutar_sql('preprocesamientos.sql',cur)

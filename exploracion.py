@@ -57,26 +57,6 @@ plt.xlabel('Abandono')
 plt.ylabel('Edad')
 plt.show()
 
-
-# Mantener solo columnas numéricas
-df_numeric = df.select_dtypes(include=['float64', 'int64'])
-
-# Correlación de variables
-corr_matrix = df_numeric.corr()
-attrition_correlation = corr_matrix["Attrition"].sort_values(ascending=False)
-attrition_correlation
-
-##### ANALISIS #######
-#Correlaciones Positivas:
-#NumCompaniesWorked (0.042) y PercentSalaryHike (0.033) tienen correlaciones positivas bajas con Attrition. Esto sugiere que los empleados que han trabajado en más empresas o que han tenido aumentos de salario más significativos son un poco más propensos a abandonar la empresa.
-#Correlaciones Negativas:
-#TotalWorkingYears (-0.171), Age (-0.159), y YearsWithCurrManager (-0.156) tienen correlaciones negativas moderadas. Esto podría indicar que los empleados más antiguos, de mayor edad, o con más tiempo con su gerente actual son menos propensos a abandonar la empresa.
-#Variables como MonthlyIncome (-0.031), YearsSinceLastPromotion (-0.033), y TrainingTimesLastYear (-0.049) también muestran una correlación negativa, aunque más baja.
-#Correlaciones Cercanas a Cero:
-#Variables como EmployeeID, StockOptionLevel, DistanceFromHome, y JobLevel tienen correlaciones muy cercanas a cero, lo que sugiere que probablemente no tengan un impacto significativo en la rotación de empleados.
-
-
-
 # Distribución de retiro por género y departamento
 plt.figure(figsize=(10, 6))
 sns.countplot(x="Department", hue="Attrition", data=df)
@@ -107,9 +87,28 @@ plt.title("Años con el gerente actual según la retención")
 plt.show()
 
 
+# Mantener solo columnas numéricas
+df_numeric = df.select_dtypes(include=['float64', 'int64'])
+
+# Correlación de variables
+corr_matrix = df_numeric.corr()
+attrition_correlation = corr_matrix["Attrition"].sort_values(ascending=False)
+attrition_correlation
+
+##### ANALISIS #######
+#Correlaciones Positivas:
+#NumCompaniesWorked (0.042) y PercentSalaryHike (0.033) tienen correlaciones positivas bajas con Attrition. Esto sugiere que los empleados que han trabajado en más empresas o que han tenido aumentos de salario más significativos son un poco más propensos a abandonar la empresa.
+#Correlaciones Negativas:
+#TotalWorkingYears (-0.171), Age (-0.159), y YearsWithCurrManager (-0.156) tienen correlaciones negativas moderadas. Esto podría indicar que los empleados más antiguos, de mayor edad, o con más tiempo con su gerente actual son menos propensos a abandonar la empresa.
+#Variables como MonthlyIncome (-0.031), YearsSinceLastPromotion (-0.033), y TrainingTimesLastYear (-0.049) también muestran una correlación negativa, aunque más baja.
+#Correlaciones Cercanas a Cero:
+#Variables como EmployeeID, StockOptionLevel, DistanceFromHome, y JobLevel tienen correlaciones muy cercanas a cero, lo que sugiere que probablemente no tengan un impacto significativo en la rotación de empleados.
+
+
 # Eliminamos las variables no numéricas y los NA para el modelo
 df_tree = df.select_dtypes(include=['float64', 'int64']).dropna()
 
+#Evaluar la importancia de las diferentes variables numéricas en la predicción de la variable "Attrition" utilizando un modelo de árbol de decisión.
 X = df_tree.drop("Attrition", axis=1)  # Asumiendo que 'Attrition' está codificado como 0 y 1
 y = df_tree["Attrition"]
 
