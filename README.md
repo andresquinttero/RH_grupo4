@@ -16,7 +16,7 @@ Este proyecto tiene como objetivo analizar la alta tasa de rotación de empleado
 
 ### **Código Fuente**
 
-#### `funciones_updated.py`
+#### `funciones.py`
 Este archivo contiene **funciones de utilidad general** utilizadas en todo el proyecto. Incluye una función para ejecutar archivos SQL, así como funciones para la normalización de datos.
 
 #### `preprocesamiento.py`
@@ -45,7 +45,7 @@ Base de datos SQLite que contiene todas las **tablas de datos necesarias para el
 
 ### **Consultas SQL**
 
-#### `preprocesamientos_updated.sql`
+#### `preprocesamientos.sql`
 Archivo SQL que contiene **varias consultas para el preprocesamiento de los datos**. Se encarga de crear nuevas tablas y variables que serán utilizadas en el análisis.
 
 ---
@@ -53,4 +53,4 @@ Archivo SQL que contiene **varias consultas para el preprocesamiento de los dato
 ## **Cómo Empezar**
 1. **Asegúrate de tener todas las dependencias instaladas**.
 2. **Ejecuta `preprocesamiento.py`** para limpiar y transformar los datos.
-3. **Utiliza `funciones_updated.py`** según sea necesario para tareas adicionales como ejecución de consultas SQL.
+3. **Utiliza `funciones.py`** según sea necesario para tareas adicionales como ejecución de consultas SQL.
