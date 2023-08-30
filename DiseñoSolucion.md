@@ -1,3 +1,6 @@
+![dass](https://github.com/andresquinttero/grupotrabajo/assets/100113128/7d19df78-022d-49e7-8b29-40aceea6d937)
+
+
 # **Diseño de Solución para el Análisis de Rotación de Empleados**
 
 ## **Objetivo General**
