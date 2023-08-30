@@ -9,9 +9,11 @@
 
 ## **Problema analítico**
 
-#1. Realizar una predicción para identificar a los empleados con riesgo de deserción.
-#2. Analizar las variables generales que están influyendo en la deserción de los empleados. 
-#3. Analizar las variables relevantes de las personas con riesgo de deserción. Con el fin de crear medidas de alerta temprana que impida la renuncia de los empleados 
+1. Realizar una predicción para identificar a los empleados con riesgo de deserción.
+
+2. Analizar las variables generales que están influyendo en la deserción de los empleados. 
+
+3. Analizar las variables relevantes de las personas con riesgo de deserción. Con el fin de crear medidas de alerta temprana que impida la renuncia de los empleados 
 
 ### **Diseño de solucion**
 ![diseño de solucion](https://github.com/andresquinttero/grupotrabajo/assets/100113128/3cef42b6-703f-4bb7-b2e2-0dc653fe9268)
