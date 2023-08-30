@@ -5,7 +5,7 @@
 
 ## **Objetivo General**
 
-#Disminuir la tasa de deserción de los empleados de la empresa 
+Disminuir la tasa de deserción de los empleados de la empresa 
 
 ## **Problema analítico**
 
