@@ -19,10 +19,6 @@ Disminuir la tasa de deserción de los empleados de la empresa
 ![diseño de solucion](https://github.com/andresquinttero/grupotrabajo/assets/100113128/65c7102b-e35d-4d17-8e2a-bcd040c34b45)
 
 
-## **Objetivo General**
-
-**El objetivo principal es reducir la tasa anual de retiros de empleados del 15% a un porcentaje más manejable, minimizando así los costos asociados y mejorando la eficiencia operativa.**
-
 ---
 
 ## **Fases del Proyecto**
