@@ -16,7 +16,8 @@ Disminuir la tasa de deserción de los empleados de la empresa
 3. Analizar las variables relevantes de las personas con riesgo de deserción. Con el fin de crear medidas de alerta temprana que impida la renuncia de los empleados 
 
 ### **Diseño de solucion**
-![diseño de solucion](https://github.com/andresquinttero/grupotrabajo/assets/100113128/3cef42b6-703f-4bb7-b2e2-0dc653fe9268)
+![diseño de solucion](https://github.com/andresquinttero/grupotrabajo/assets/100113128/65c7102b-e35d-4d17-8e2a-bcd040c34b45)
+
 
 ## **Objetivo General**
 
