@@ -58,7 +58,7 @@ df['EnvironmentSatisfaction'].mean()
 df['EnvironmentSatisfaction'].median()
 df[df['EnvironmentSatisfaction'].isnull()]
 df['EnvironmentSatisfaction'] = df['EnvironmentSatisfaction'].fillna(3)
-# Para la columna 'JobSatisfaction' se observo el promedio y un conteo de repeticion y se llego a la conclusion de que el 4 era el valor más adecuado para no interferir de una
+# Para la columna 'JobSatisfaction' se observo el promedio y un conteo de repeticion y se llego a la conclusion de que el 3 era el valor más adecuado para no interferir de una
 # manera significativa en el resultado y por lo tanto los valores nulos se remplazaran por 3
 df['JobSatisfaction'].value_counts()
 df['JobSatisfaction'].mean()
@@ -72,7 +72,7 @@ df['WorkLifeBalance'].mean()
 df['WorkLifeBalance'].median()
 df[df['WorkLifeBalance'].isnull()]
 df['WorkLifeBalance'] = df['WorkLifeBalance'].fillna(3)
-# Remplazar los valores de los años trabajados en la empresa en la columan de años totales trabajdos para quitar los nulos
+# Remplazar los valores de los años trabajados en la empresa en la columna de años totales trabajdos para quitar los nulos
 df['TotalWorkingYears'].isnull().sum()
 df['TotalWorkingYears'].fillna(df['YearsAtCompany'], inplace=True)
 
