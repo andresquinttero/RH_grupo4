@@ -9,7 +9,7 @@ from sklearn import tree  # para ajustar árboles de decisión
 from sklearn.tree import export_text  # para exportar reglas del árbol
 from sklearn.tree import DecisionTreeClassifier
 
-# Conexión a la base de datosaa
+# Conexión a la base de datosaaa
 conn = sql.connect("db_empleados")
 cur = conn.cursor()  # para ejecutar consultas SQL en la base de datos
 
