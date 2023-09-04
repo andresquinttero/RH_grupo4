@@ -13,7 +13,7 @@ XKbest = df.drop("Attrition", axis=1)  # Características
 yKbest = df["Attrition"]  # Variable objetivo
 
 #  Crear modelo de selección f_classif
-k_best = SelectKBest(score_func=f_classif, k=5)  # con k= 5, las 5 mejores características
+k_best = SelectKBest(score_func=f_classif, k=8)  # con k= 8, las 8 mejores características
 
 # Ajustar las variables
 X_best = k_best.fit_transform(XKbest, yKbest)
@@ -44,7 +44,7 @@ ysfs = df["Attrition"]  # Variable objetivo
 
 # Crear una instancia de SequentialFeatureSelector
 sfs = SequentialFeatureSelector(LogisticRegression(class_weight="balanced", max_iter=1000), 
-                                n_features_to_select=5, 
+                                n_features_to_select=8, 
                                 direction= "forward",  
                                 scoring='f1')
 
@@ -60,8 +60,8 @@ df_variables_sfs = Xsfs[selected_featuresSFS].copy()
 # Agrega la variable "Attrition" al DataFrame df_variables_sfs
 df_variables_sfs['Attrition'] = df['Attrition']
 
-print(sorted(selected_featuresKbest))
-print(sorted(selected_featuresSFS))
+print("Variables con KBest:",sorted(selected_featuresKbest))
+print("Variables con SFS:",sorted(selected_featuresSFS))
 
 conn = sql.connect("variables_kbest") ### crea una base de datos con el nombre dentro de comillas, si existe crea una conexión.
 df_variables_kbest.to_sql("df_variables_kbest", conn, if_exists = "replace", index=False)### Llevar tablas a base de datos

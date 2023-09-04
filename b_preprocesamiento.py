@@ -1,6 +1,6 @@
 import pandas as pd ### para manejo de datos
 import sqlite3 as sql #### para bases de datos sql
-import funciones as funciones  ###archivo de funciones propias
+import a_funciones as a_funciones  ###archivo de funciones propias
 
 ####################################################################################################################
 ########################  1. Comprender y limpiar datos ##################################################################
@@ -160,7 +160,7 @@ df['Attrition'].unique()
 # Pendiente, Age puede ser una...
 
 # Llamar a la función para identificar y eliminar outliers
-funciones.identify_and_remove_outliers(conn, ['MonthlyIncome', 'TrainingTimesLastYear', 'YearsAtCompany', 'TotalWorkingYears'])
+a_funciones.identify_and_remove_outliers(conn, ['MonthlyIncome', 'TrainingTimesLastYear', 'YearsAtCompany', 'TotalWorkingYears'])
 
 # Lista de columnas para cambiar el tipo de datos
 columns_to_convert = [
@@ -187,4 +187,4 @@ df.to_sql("all_employees", conn, if_exists="replace")
 
 df = pd.read_sql("SELECT * FROM all_employees", conn)
 cur=conn.cursor()
-funciones.ejecutar_sql('preprocesamientos.sql',cur)
+a_funciones.ejecutar_sql('preprocesamientos.sql',cur)

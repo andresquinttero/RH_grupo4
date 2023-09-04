@@ -36,7 +36,7 @@ y_predknn = knn.predict(X_test) # Predicción conjunto de prueba
 accuracy_knn = accuracy_score(y_test, y_predknn)
 report_knn = classification_report(y_test, y_predknn)
 
-print("Accuracy:", accuracy_knn)
+print("Accuracy KNN con KBest:", accuracy_knn)
 print("Informe de clasificación:\n" ,report_knn)
 
 # Modelo de Árbol de Decisión
@@ -178,22 +178,23 @@ scorestuneado = cross_val_score(best_tree, X_train, y_train, cv=10, scoring='acc
 print("Resultados de Validación Cruzada (Accuracy):", scorestuneado)
 print("Precisión media en Validación Cruzada:", scorestuneado.mean())
 
-# Debido a que el modelo base es muy bueno con los parámetros por defecto,
-# el modelo con afinación de hiperparámetros es el mismo,
-# solo difieren en la validación cruzada, que la media es un poco más alta
-# en el modelo tuneado. Se utilizará el modelo tuneado
+# El modelo base es muy bueno con los parámetros por defecto,
+# el modelo con afinación de hiperparámetros es un poco "peor" que el base según la accuracy,
+# Debido a la pertinencia del problema con las personas que se retirarán de la empresa,
+# se utilizará el modelo tuneado ya que nos sirve más.
 
 # Resultados: 
 # Matriz de Confusión:
-# [[720  20]
-#  [ 17 125]]
-# Precisión: 0.8620689655172413
-# Recall: 0.8802816901408451
-# F1-Score: 0.8710801393728222
-# Accuracy: 0.9580498866213152
-# Resultados de Validación Cruzada (Accuracy): [0.92917847 0.92634561 0.9631728  0.96883853 0.94617564 0.96883853
-#  0.95184136 0.9490085  0.96306818 0.95170455]
-# Precisión media en Validación Cruzada: 0.9518172160700489
+# [[728  12]
+#  [ 4  138]]
+# Precisión: 0.92
+# Recall: 0.971830985915493
+# F1-Score: 0.9452054794520549
+# Accuracy: 0.981859410430839
+# Resultados de Validación Cruzada (Accuracy): [0.98583569 0.96883853 0.97450425 0.99433428 0.97450425 0.99150142
+#  0.98583569 0.99150142 0.97159091 0.97727273]
+# Precisión media en Validación Cruzada: 0.9815719160442955
+
 
 # Guardar el modelo con afinación de hiperparámetros en un archivo .pkl
 joblib.dump(best_tree, 'presunto_mejor_arbol.pkl')

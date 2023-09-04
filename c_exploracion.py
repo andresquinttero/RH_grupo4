@@ -1,7 +1,7 @@
 #### Cargar paquetes siempre al inicio
 import pandas as pd  # para manejo de datos
 import sqlite3 as sql  # para bases de datos SQL
-import funciones as funciones  # archivo de funciones propias
+import a_funciones as a_funciones  # archivo de funciones propias
 import matplotlib.pyplot as plt  # gráficos
 import seaborn as sns  # gráficos adicionales
 from pandas.plotting import scatter_matrix  # para matriz de correlaciones

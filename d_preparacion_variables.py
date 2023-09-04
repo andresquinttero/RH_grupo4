@@ -2,7 +2,7 @@ import sqlite3 as sql #### para bases de datos sql
 import pandas as pd # para manejo de datos
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
-import funciones as funciones 
+import a_funciones as a_funciones 
 
 conn = sql.connect("db_empleados") 
 df = pd.read_sql("SELECT * FROM all_employees", conn)
