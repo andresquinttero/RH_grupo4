@@ -83,12 +83,6 @@ print(df.isnull().sum())
 df['retirementDate'].info()
 df['retirementDate'] = pd.to_datetime(df['retirementDate'], dayfirst=True)
 
-#Las columnas retirementType y resignationReason contienen valores categóricos en formato de cadena de texto.
-print(df['retirementType'].dtype)
-print(df['resignationReason'].dtype)
-df['retirementType'] = df['retirementType'].astype('category')
-df['resignationReason'] = df['resignationReason'].astype('category')
-
 #Ahora ya tienen un formato adecuado
 print(df.dtypes)
 
@@ -171,8 +165,10 @@ funciones.identify_and_remove_outliers(conn, ['MonthlyIncome', 'TrainingTimesLas
 # Lista de columnas para cambiar el tipo de datos
 columns_to_convert = [
     'Education', 'EnvironmentSatisfaction', 'JobInvolvement',
-    'JobSatisfaction', 'PerformanceRating', 'WorkLifeBalance', 'JobLevel'
+    'JobSatisfaction', 'TotalWorkingYears','NumCompaniesWorked','PerformanceRating', 'WorkLifeBalance', 'JobLevel'
 ]
+
+print(df.dtypes)
 
 # Cambiar el tipo de datos de cada columna a 'str'
 for column in columns_to_convert:
