@@ -10,13 +10,11 @@ from sklearn.model_selection import cross_val_score
 import sklearn.metrics as metrics
 import joblib
 
-conn = sql.connect("variables_kbest")
-conn1 = sql.connect("variables_sfs")
+conn = sql.connect("db_empleados")
 
 # Conexiones 
 df_variables_kbest = pd.read_sql("select * from df_variables_kbest", conn)
-
-df_variables_sfs = pd.read_sql("select * from df_variables_sfs", conn1)
+df_variables_sfs = pd.read_sql("select * from df_variables_sfs", conn)
 
 # Para las variables seleccionadas con KBest
 
@@ -185,10 +183,10 @@ print("Precisión media en Validación Cruzada:", scorestuneado.mean())
 
 # Resultados: 
 # Matriz de Confusión:
-# [[728  12]
-#  [ 4  138]]
+# [[728  12]    12 que el modelo predice que que sí cuando en realidad no
+#  [ 4  138]]    4 que el modelo predice que no cuando en realidad sí
 # Precisión: 0.92
-# Recall: 0.971830985915493
+# Recall: 0.971830985915493    el 97.18% de las veces que debería haber predicho la clase positiva, el modelo lo hizo correctamente.
 # F1-Score: 0.9452054794520549
 # Accuracy: 0.981859410430839
 # Resultados de Validación Cruzada (Accuracy): [0.98583569 0.96883853 0.97450425 0.99433428 0.97450425 0.99150142

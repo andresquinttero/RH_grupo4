@@ -63,8 +63,7 @@ df_variables_sfs['Attrition'] = df['Attrition']
 print("Variables con KBest:",sorted(selected_featuresKbest))
 print("Variables con SFS:",sorted(selected_featuresSFS))
 
-conn = sql.connect("variables_kbest") ### crea una base de datos con el nombre dentro de comillas, si existe crea una conexión.
-df_variables_kbest.to_sql("df_variables_kbest", conn, if_exists = "replace", index=False)### Llevar tablas a base de datos
 
-conn1 = sql.connect("variables_sfs") ### crea una base de datos con el nombre dentro de comillas, si existe crea una conexión.
-df_variables_sfs.to_sql("df_variables_sfs", conn1, if_exists = "replace", index=False) ### Llevar tablas a base de datos
+conn = sql.connect("db_empleados")
+df_variables_kbest.to_sql("df_variables_kbest", conn, if_exists = "replace", index=False)### Llevar tablas a base de datos
+df_variables_sfs.to_sql("df_variables_sfs", conn, if_exists = "replace", index=False) ### Llevar tablas a base de datos

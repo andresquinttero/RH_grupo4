@@ -207,11 +207,19 @@ plt.ylabel('JobSatisfaction')
 plt.show()
 
 # Relación entre "EnvironmentSatisfaction" y "Attrition"
-sns.boxplot(x='Attrition', y='EnvironmentSatisfaction', data=df)
-plt.title('Relación entre EnvironmentSatisfaction y Attrition')
-plt.xlabel('Attrition')
-plt.ylabel('EnvironmentSatisfaction')
+ax = sns.countplot(data=df, x='EnvironmentSatisfaction', hue='Attrition', palette=["dodgerblue", "firebrick"])
+
+plt.xlabel('EnvironmentSatisfaction')
+plt.ylabel('Frecuencia')
+plt.title('Gráfico de Barras: EnvironmentSatisfaction vs. Attrition')
+plt.legend(title='Attrition', labels=['No', 'Sí'])
+
+for p in ax.patches:
+    height = p.get_height()
+    ax.annotate(f'{height}', (p.get_x() + p.get_width() / 2., height), ha='center', va='bottom')
+
 plt.show()
+
 
 ##### Análisis final
 
