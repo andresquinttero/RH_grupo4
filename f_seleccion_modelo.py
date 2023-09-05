@@ -9,6 +9,9 @@ from sklearn.metrics import  classification_report
 from sklearn.model_selection import cross_val_score
 import sklearn.metrics as metrics
 import joblib
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 conn = sql.connect("db_empleados")
 
@@ -27,8 +30,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 # Modelo K nearest neighbor
 knn = KNeighborsClassifier(n_neighbors=3)  # Se crea modelo
 knn.fit(X_train, y_train) # Se ajusta modelo
-
-y_predknn = knn.predict(X_test) # Predicción conjunto de prueba
+y_predknn = knn.predict(X_test.values) # Predicción conjunto de prueba
 
 # Evaluación
 accuracy_knn = accuracy_score(y_test, y_predknn)
@@ -51,7 +53,6 @@ print("Accuracy del Árbol de Decisión:", accuracy_tree)
 print("Informe de clasificación del Árbol de Decisión:\n", report_tree)
 
 
-
 # Para las variables seleccionadas con Sequential Feature Selector
 X_sfs = df_variables_sfs.drop("Attrition", axis=1)  # Características
 y_sfs = df_variables_sfs["Attrition"]  # Variable objetivo
@@ -63,7 +64,7 @@ X_train_sfs, X_test_sfs, y_train_sfs, y_test_sfs = train_test_split(X_sfs, y_sfs
 knn_sfs = KNeighborsClassifier(n_neighbors=3)  # Se crea modelo 
 knn_sfs.fit(X_train_sfs, y_train_sfs)  # Se ajusta modelo 
 
-y_pred_sfs_knn = knn_sfs.predict(X_test_sfs)  # Predicción en conjunto de prueba
+y_pred_sfs_knn = knn_sfs.predict(X_test_sfs.values)  # Predicción en conjunto de prueba
 
 # Evaluación
 accuracy_sfs_knn = accuracy_score(y_test_sfs, y_pred_sfs_knn)
@@ -85,8 +86,9 @@ report_sfs_tree = classification_report(y_test_sfs, y_pred_sfs_tree)
 print("Accuracy del Árbol de Decisión con SFS:", accuracy_sfs_tree)
 print("Informe de clasificación del Árbol de Decisión con SFS:\n", report_sfs_tree)
 
+
 # Los mejores resultados los da el modelo de Árbol de Decisión 
-# con las características de KBest
+# con las características de Sequential Feature Selector
 
 
 # Afinamiento de hiperparámetros
@@ -99,17 +101,17 @@ param_grid = [{'criterion': ['gini', 'entropy'], # Criterio para medir la calida
                'min_samples_leaf': [1, 2, 3, 4, 5]# Número mínimo de muestras requeridas en un nodo hoja
                }]
 
-grid_search = GridSearchCV(tree, param_grid, cv=10, scoring='recall') # Busqueda en cuadricula
+grid_search = GridSearchCV(tree_sfs, param_grid, cv=10, scoring='recall') # Busqueda en cuadricula
 
-grid_search.fit(X_train, y_train) # Ajusta el modelo
+grid_search.fit(X_train_sfs, y_train_sfs) # Ajusta el modelo
 
 best_params = grid_search.best_params_ #  Mejores parametros
 best_tree = grid_search.best_estimator_ #  Mejor modelo
 
 # Evaluación
-y_pred_best_tree = best_tree.predict(X_test)  # Predicción en conjunto de prueba
-accuracy_best_tree = accuracy_score(y_test, y_pred_best_tree)
-report_best_tree = classification_report(y_test, y_pred_best_tree)
+y_pred_best_tree = best_tree.predict(X_test_sfs)  # Predicción en conjunto de prueba
+accuracy_best_tree = accuracy_score(y_test_sfs, y_pred_best_tree)
+report_best_tree = classification_report(y_test_sfs, y_pred_best_tree)
 
 print("Mejores hiperparámetros:", best_params)
 print("Accuracy del mejor Árbol de Decisión:", accuracy_best_tree)
@@ -120,29 +122,29 @@ print("Informe de clasificación del mejor Árbol de Decisión:\n", report_best_
 # Evaluación modelo base
 
 # 1. Matriz de Confusión
-y_pred = tree.predict(X_test)
-confusion = confusion_matrix(y_test, y_pred)
+y_pred = tree_sfs.predict(X_test_sfs)
+confusion = confusion_matrix(y_test_sfs, y_pred)
 print("Matriz de Confusión:")
 print(confusion)
 
 # 2. Precisión
-precision = precision_score(y_test, y_pred)
+precision = precision_score(y_test_sfs, y_pred)
 print("Precisión:", precision)
 
 # 3. Recall
-recall = recall_score(y_test, y_pred)
+recall = recall_score(y_test_sfs, y_pred)
 print("Recall:", recall)
 
 # 4. F1-Score
-f1 = f1_score(y_test, y_pred)
+f1 = f1_score(y_test_sfs, y_pred)
 print("F1-Score:", f1)
 
 # 5. Accuracy
-accuracy = accuracy_score(y_test, y_pred)
+accuracy = accuracy_score(y_test_sfs, y_pred)
 print("Accuracy:", accuracy)
 
 # 6. Validación Cruzada
-scoresbase = cross_val_score(tree, X_train, y_train, cv=10, scoring='accuracy')  # 10-fold cross-validation
+scoresbase = cross_val_score(tree_sfs, X_train_sfs, y_train_sfs, cv=10, scoring='accuracy')  # 10-fold cross-validation
 print("Resultados de Validación Cruzada (Accuracy):", scoresbase)
 print("Precisión media en Validación Cruzada:", scoresbase.mean())
 
@@ -150,48 +152,61 @@ print("Precisión media en Validación Cruzada:", scoresbase.mean())
 # Evaluación modelo tuneado
 
 # 1. Matriz de Confusión
-y_pred_best_tree = best_tree.predict(X_test)
-confusion = confusion_matrix(y_test, y_pred_best_tree)
+y_pred_best_tree = best_tree.predict(X_test_sfs)
+confusion = confusion_matrix(y_test_sfs, y_pred_best_tree)
 print("Matriz de Confusión:")
 print(confusion)
 
 # 2. Precisión
-precision = precision_score(y_test, y_pred_best_tree)
+precision = precision_score(y_test_sfs, y_pred_best_tree)
 print("Precisión:", precision)
 
 # 3. Recall
-recall = recall_score(y_test, y_pred_best_tree)
+recall = recall_score(y_test_sfs, y_pred_best_tree)
 print("Recall:", recall)
 
 # 4. F1-Score
-f1 = f1_score(y_test, y_pred_best_tree)
+f1 = f1_score(y_test_sfs, y_pred_best_tree)
 print("F1-Score:", f1)
 
 # 5. Accuracy
-accuracy = accuracy_score(y_test, y_pred_best_tree)
+accuracy = accuracy_score(y_test_sfs, y_pred_best_tree)
 print("Accuracy:", accuracy)
 
 # 6. Validación Cruzada
-scorestuneado = cross_val_score(best_tree, X_train, y_train, cv=10, scoring='accuracy')  # 10-fold cross-validation
+scorestuneado = cross_val_score(best_tree, X_train_sfs, y_train_sfs, cv=10, scoring='accuracy')  # 10-fold cross-validation
 print("Resultados de Validación Cruzada (Accuracy):", scorestuneado)
 print("Precisión media en Validación Cruzada:", scorestuneado.mean())
 
-# El modelo base es muy bueno con los parámetros por defecto,
-# el modelo con afinación de hiperparámetros es un poco "peor" que el base según la accuracy,
-# Debido a la pertinencia del problema con las personas que se retirarán de la empresa,
-# se utilizará el modelo tuneado ya que nos sirve más.
 
-# Resultados: 
+
+# Crear un mapa de calor (heatmap) de la matriz de confusión
+plt.figure(figsize=(8, 6))
+sns.heatmap(confusion, annot=True, fmt="d", cmap="magma", cbar=False)
+plt.xlabel("Predicciones")
+plt.ylabel("Valores reales")
+plt.title("Matriz de Confusión")
+plt.show()
+
+
+
+# El modelo base es muy bueno con los parámetros por defecto,
+# el modelo con afinación de hiperparámetros es exactamente el mismo debido a que usamos un random state fijo,
+# aún así, se utilizará el modelo tuneado con hiperparámetros.
+
+
+# Resultados:
+
 # Matriz de Confusión:
-# [[728  12]    12 que el modelo predice que que sí cuando en realidad no
-#  [ 4  138]]    4 que el modelo predice que no cuando en realidad sí
-# Precisión: 0.92
-# Recall: 0.971830985915493    el 97.18% de las veces que debería haber predicho la clase positiva, el modelo lo hizo correctamente.
-# F1-Score: 0.9452054794520549
-# Accuracy: 0.981859410430839
-# Resultados de Validación Cruzada (Accuracy): [0.98583569 0.96883853 0.97450425 0.99433428 0.97450425 0.99150142
-#  0.98583569 0.99150142 0.97159091 0.97727273]
-# Precisión media en Validación Cruzada: 0.9815719160442955
+# [[731   9]                         9 que el modelo predice que que sí cuando en realidad no
+#  [  2 140]]                        4 que el modelo predice que no cuando en realidad sí
+# Precisión: 0.9395973154362416
+# Recall: 0.9859154929577465         el 98.59% de las veces que debería haber predicho la clase positiva, lo hizo correctamente.
+# F1-Score: 0.9621993127147765
+# Accuracy: 0.9875283446712018
+# Resultados de Validación Cruzada (Accuracy): [0.97450425 0.97733711 0.98016997 0.99150142 0.97167139 0.98583569
+#  0.97450425 0.98300283 0.98579545 0.98011364]
+# Precisión media en Validación Cruzada: 0.9804436003090394
 
 
 # Guardar el modelo con afinación de hiperparámetros en un archivo .pkl
