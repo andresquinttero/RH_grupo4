@@ -12,7 +12,7 @@ import joblib
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import a_funciones
 conn = sql.connect("db_empleados")
 
 # Conexiones 
@@ -117,8 +117,6 @@ print("Mejores hiperparámetros:", best_params)
 print("Accuracy del mejor Árbol de Decisión:", accuracy_best_tree)
 print("Informe de clasificación del mejor Árbol de Decisión:\n", report_best_tree)
 
-
-
 # Evaluación modelo base
 
 # 1. Matriz de Confusión
@@ -153,7 +151,7 @@ print("Precisión media en Validación Cruzada:", scoresbase.mean())
 
 # 1. Matriz de Confusión
 y_pred_best_tree = best_tree.predict(X_test_sfs)
-confusion = confusion_matrix(y_test_sfs, y_pred_best_tree)
+confusion = a_funciones.show_confusion_matrix(y_test_sfs, y_pred_best_tree)
 print("Matriz de Confusión:")
 print(confusion)
 
@@ -189,7 +187,6 @@ plt.title("Matriz de Confusión")
 plt.show()
 
 
-
 # El modelo base es muy bueno con los parámetros por defecto,
 # el modelo con afinación de hiperparámetros es exactamente el mismo debido a que usamos un random state fijo,
 # aún así, se utilizará el modelo tuneado con hiperparámetros.
@@ -198,8 +195,8 @@ plt.show()
 # Resultados:
 
 # Matriz de Confusión:
-# [[731   9]                         9 que el modelo predice que que sí cuando en realidad no
-#  [  2 140]]                        4 que el modelo predice que no cuando en realidad sí
+# [[731   9]                         9 que el modelo predice que que sí va a salir de la empresa cuando en realidad no saldrá
+#  [  2 140]]                        2 que el modelo predice que no va a salir de la empresa cuando en realidad sí saldrá
 # Precisión: 0.9395973154362416
 # Recall: 0.9859154929577465         el 98.59% de las veces que debería haber predicho la clase positiva, lo hizo correctamente.
 # F1-Score: 0.9621993127147765

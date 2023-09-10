@@ -8,7 +8,7 @@ from sklearn.tree import  DecisionTreeClassifier
 import numpy as np
 from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import  KNeighborsClassifier
-
+import a_funciones
 conn = sql.connect("db_empleados") # Conecatamos la base
 
 df = pd.read_sql("select * from df", conn) # Cargamos los datos
@@ -103,3 +103,4 @@ print("Número óptimo de características para Árbol de Decisión:", best_num_
 
 # Se descarta poner 60 características en el modelo de árbol de decisión
 # porque así no queda mucha interpretabilidad en el caso de estudio
+# Se usan 16 características para ambos modelos
