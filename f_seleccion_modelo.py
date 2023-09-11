@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import  KNeighborsClassifier
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix, precision_score, recall_score, f1_score
 from sklearn.model_selection import GridSearchCV
-from sklearn.tree import  DecisionTreeClassifier
+from sklearn.tree import  DecisionTreeClassifier, plot_tree
 from sklearn.metrics import  classification_report
 from sklearn.model_selection import cross_val_score
 import sklearn.metrics as metrics
@@ -184,6 +184,7 @@ sns.heatmap(confusion, annot=True, fmt="d", cmap="magma", cbar=False)
 plt.xlabel("Predicciones")
 plt.ylabel("Valores reales")
 plt.title("Matriz de Confusión")
+plt.savefig("matriz_confusion.png", dpi=600)  
 plt.show()
 
 
@@ -205,10 +206,25 @@ plt.show()
 #  0.97450425 0.98300283 0.98579545 0.98011364]
 # Precisión media en Validación Cruzada: 0.9804436003090394
 
+# Gráfica Árbol de decision
+# Modelo de Árbol de Decisión con límite de profundidad
+tree_sfs1 = DecisionTreeClassifier(random_state=42, max_depth=3)
+
+tree_sfs1.fit(X_train_sfs, y_train_sfs)  # Ajusta el modelo
+
+# Convierte los nombres de las características y las clases en listas de cadenas de texto
+feature_names1 = list(map(str, X_sfs.columns))
+class_names1 = list(map(str, ['No Attrition', 'Attrition']))
+
+plt.figure(figsize=(20, 10))  # Tamaño de la figura
+plot_tree(tree_sfs1, feature_names=feature_names1, class_names=class_names1, filled=True, rounded=True)
+plt.title("Árbol de Decisión con SFS (Profundidad máxima: 3)")
+
+# Guarda la imagen en un archivo
+plt.savefig("arbol_decision_limitado.png", dpi=600)  
+
+# Muestra la figura en la pantalla
+plt.show()
 
 # Guardar el modelo con afinación de hiperparámetros en un archivo .pkl
 joblib.dump(best_tree, 'presunto_mejor_arbol.pkl')
-
-
-
-
